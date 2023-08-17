@@ -1,0 +1,19 @@
+
+.form-box{
+    background-color: aliceblue;
+    padding: 50px;
+    border-radius: 20px;
+}
+.form-box .Text-input{
+    margin-top: 20px;
+}
+.table-wrapper{
+    padding: 100px;
+}
+.main-div{
+    background-image: url("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 700px;
+    margin-top: 0px;
+}
