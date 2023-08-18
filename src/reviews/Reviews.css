@@ -11,6 +11,7 @@
 .reviews-btn{
     text-align: center;
  margin-top: 20px;
+
 }
 .form-box .Text-input{
     margin-top: 20px;
@@ -27,12 +28,18 @@
 }
 .form-heading{
     text-align: center;
+    color :aliceblue;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .table-main{
     height: 400;
     margin-left: 100px;
     width: 80%;
     text-align: center;
+    background-image: url("https://img.freepik.com/free-vector/white-background-gradient-modern-abstract-design-wave_343694-2337.jpg?w=826&t=st=1692353510~exp=1692354110~hmac=4dc468335bcd80f2acf9e522bc7a2b7968504ba040a6b59c984637b5ad63daad");
+    background-size: cover;
+    background-repeat: no-repeat;
+    
 }
 .err{
     color: red;
