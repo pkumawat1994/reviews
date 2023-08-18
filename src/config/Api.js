@@ -1,6 +1,4 @@
 const Api = {
-  getReviews: "/reviews",
-  postReviews: "/reviews",
-//   deleteReviews: "/:",
+  Reviews: "/reviews",
 };
 export { Api };

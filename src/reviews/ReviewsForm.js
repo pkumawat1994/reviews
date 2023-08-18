@@ -6,12 +6,11 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import "./Reviews.css";
 import * as Yup from "yup";
+import Roll from 'react-reveal/Roll';
 import { Formik } from "formik";
-import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import dataService from "../config/DataService";
-import { postReviews } from "./ReviewsDataService";
+import { addReviews, updateReviews } from "./ReviewsDataService";
 
 const ReviewsSchema = Yup.object().shape({
   reviewTitle: Yup.string().required("Required"),
@@ -23,7 +22,6 @@ const ReviewsSchema = Yup.object().shape({
 const ReviewsForm = () => {
   const { state } = useLocation();
   let navigate = useNavigate();
-  console.log(147, state);
 
   const initialValues = {
     reviewTitle: state?.editObj ? state?.editObj?.reviewTitle : "",
@@ -33,46 +31,38 @@ const ReviewsForm = () => {
   };
   console.log(initialValues, "Init");
 
-  const handleFormSubmit = (values, { setSubmitting}) => {
-
-    let updateButton = document.getElementsByName("update-review-btn");
+  const handleFormSubmit = (values, { setSubmitting }) => {
     let addButton = document.getElementsByName("add-review-btn");
-      console.log("addButton",addButton[0]?.name);
+    console.log("addButton", addButton[0]?.name);
+
     if (addButton[0]?.name == "add-review-btn") {
       // Perform add action
-      axios.post("https://e-shop-com.onrender.com/reviews", values).then((res) => {
+      addReviews(values).then((res) => {
+        console.log(124,res)
         if (res.status == 201) {
           toast.success("Created SuccessFully");
           navigate("/");
+          setSubmitting(false);
         }
       });
-
-      // dataService.post(values).then((res)=>{
-      //   console.log("rrre",res)
-      //   if (res?.status == 201) {
-      //         toast.success("Created SuccessFully");
-      //         navigate("/");
-      //       }
-      // })
     } else {
       let id = state?.editObj?.id;
-      dataService.put(`${id}`, values).then((res) => {
+      updateReviews(id, values).then((res) => {
         if (res?.status == 200) {
-         
           toast.success("Updated SuccessFully");
           navigate("/");
-          setSubmitting(false)
+          setSubmitting(false);
         }
       });
     }
   };
 
   return (
-    <div className="main-div" >
-      <h1>Let Gives Reviews</h1>
+    <div className="main-div">
+      <h1 className="form-heading">Let Gives Reviews</h1>
 
-      <Grid container sx={{ margin: "auto", width: "50%" }}>
-        <Grid sm={12} md={6} lg={6}>
+      <Grid container sx={{ margin: "auto", width: "30%" }}>
+        <Grid sm={12} md={12} lg={12}>
           <Box className="form-box">
             <Formik
               initialValues={initialValues}
@@ -90,7 +80,7 @@ const ReviewsForm = () => {
               }) => (
                 <form onSubmit={handleSubmit}>
                   <TextField
-                error={errors.reviewTitle }
+                    error={errors.reviewTitle}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.reviewTitle}
@@ -103,12 +93,12 @@ const ReviewsForm = () => {
                     name="reviewTitle"
                   />
                   <br />
-                  {errors.reviewTitle &&
+                  <Roll  bottom collapse ><div className="err">{errors.reviewTitle &&
                     touched.reviewTitle &&
                     errors.reviewTitle}
+                    </div></Roll >
                   <TextField
-                error={errors.reviewText }
-
+                    error={errors.reviewText}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.reviewText}
@@ -122,11 +112,10 @@ const ReviewsForm = () => {
                     cols={50}
                   ></TextField>
                   <br />
-                  {errors.reviewText && touched.reviewText && errors.reviewText}
+                  <Roll  bottom collapse ><div className="err"> {errors.reviewText && touched.reviewText && errors.reviewText}</div></Roll >
 
                   <TextField
-                error={errors.userId }
-
+                    error={errors.userId}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.userId}
@@ -139,18 +128,18 @@ const ReviewsForm = () => {
                     name="userId"
                   />
                   <br />
-                  {errors.userId && touched.userId && errors.userId}
+                  <Roll  bottom collapse ><div className="err">{errors.userId && touched.userId && errors.userId}</div></Roll >
 
                   <Rating
                     precision={0.5}
                     name="rating"
                     fullWidth
+                    className="Text-input"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.rating}
                   />
                   <br />
-              
 
                   {state?.editObj ? (
                     <Button
@@ -182,7 +171,6 @@ const ReviewsForm = () => {
             </Formik>
           </Box>
         </Grid>
-        <Grid sm={12} md={6} lg={6}></Grid>
       </Grid>
     </div>
   );

@@ -2,7 +2,6 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import "./Reviews.css";
-import axios from "axios";
 import Rating from "@mui/material/Rating";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
@@ -11,8 +10,8 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import dataService, { API_ENDPOINT } from "../config/DataService";
-import { Api } from "../config/Api";
+import Jello from 'react-reveal/Jello';
+import { deleteReviews, getReviews, getReviewsById } from "./ReviewsDataService";
 
 export default function ReviewsTable() {
   const [row, setRow] = React.useState([]);
@@ -23,37 +22,35 @@ export default function ReviewsTable() {
     setAnchorEl(null);
   };
 
-  const getReviews = () => {
-    // axios.get("http://localhost:5000/reviews").then((re) => setRow(re.data));
-    dataService()
+  const getAllReviews = () => {
+    getReviews()
       .then((res) => setRow(res.data))
       .catch((er) => console.log(er));
   };
 
   const handleAction = async (action) => {
     if (action === "Delete") {
-      const res = await dataService.delete(`/${editId}`);
+      const res = await deleteReviews(editId);
       if (res.status == 200) {
         toast.error("Deleted Successdfully");
-        getReviews();
+        getAllReviews();
         handleClose();
       }
-      console.log(res, "resId");
     }
 
     if (action === "Edit") {
-      dataService.get(`/${editId}`).then((re)=>{
-        if(re.status==200){
+      getReviewsById(editId).then((re) => {
+        if (re.status == 200) {
           navigate("/reviews-form", { state: { editObj: re.data } });
         }
-      })
+      });
     }
   };
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "reviewTitle", headerName: "Review Title", width: 130 },
-    { field: "reviewText", headerName: "Review Text", width: 130 },
-    { field: "userId", headerName: "User ID", width: 130 },
+    { field: "reviewText", headerName: "Review Text", width: 200 },
+    { field: "userId", headerName: "User ID", width: 170 },
     {
       field: "rating",
       headerName: "Rating",
@@ -72,7 +69,7 @@ export default function ReviewsTable() {
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <>
           <IconButton
@@ -81,7 +78,7 @@ export default function ReviewsTable() {
             aria-controls={open ? "long-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
             aria-haspopup="true"
-            onClick={(e) => handleClick(e, params.id)}
+            onClick={(e) => handleClick(e, params?.id)}
           >
             <MoreVertIcon />
           </IconButton>
@@ -93,12 +90,7 @@ export default function ReviewsTable() {
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
-            PaperProps={{
-              style: {
-                maxHeight: 48 * 4.5,
-                width: "10ch",
-              },
-            }}
+           
           >
             <MenuItem onClick={() => handleAction("Edit")}>Edit</MenuItem>
             <MenuItem onClick={() => handleAction("Delete")}>Delete</MenuItem>
@@ -109,7 +101,7 @@ export default function ReviewsTable() {
   ];
 
   React.useEffect(() => {
-    getReviews();
+    getAllReviews();
   }, []);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -123,12 +115,15 @@ export default function ReviewsTable() {
   };
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <Link to="/reviews-form">
-        <Button variant="contained">Give Reviews</Button>
-      </Link>
-      <Box className="table-wrapper">
-        <DataGrid
+    <div className="table-main">
+      <div className="reviews-btn">
+        <Link to="/reviews-form">
+          <Button variant="contained">Give Reviews</Button>
+        </Link>
+      </div>
+
+      <Jello><Box className="table-wrapper">
+    <DataGrid
           rows={row}
           columns={columns}
           initialState={{
@@ -137,10 +132,11 @@ export default function ReviewsTable() {
             },
           }}
           pageSizeOptions={[5, 10]}
-          // checkboxSelection
-          getRowId={(row) => row.id}
+          
+          getRowId={(row) => row?.id}
         />
-      </Box>
+         
+      </Box></Jello>
     </div>
   );
 }

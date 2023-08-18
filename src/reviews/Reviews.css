@@ -1,8 +1,16 @@
 
 .form-box{
-    background-color: aliceblue;
+    background-color:rgba(236, 228, 231, 0.5);
     padding: 50px;
     border-radius: 20px;
+    transition:  1s;
+}
+.form-box:hover{
+    background-color: rgb(215, 227, 236);   
+}
+.reviews-btn{
+    text-align: center;
+ margin-top: 20px;
 }
 .form-box .Text-input{
     margin-top: 20px;
@@ -11,9 +19,21 @@
     padding: 100px;
 }
 .main-div{
-    background-image: url("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-image: url("https://img.freepik.com/premium-photo/blank-yellow-sticky-note-pencil-navy-blue-table-background_7189-3543.jpg");
     background-size: cover;
     background-repeat: no-repeat;
-    height: 700px;
+    height: 630px;
     margin-top: 0px;
+}
+.form-heading{
+    text-align: center;
+}
+.table-main{
+    height: 400;
+    margin-left: 100px;
+    width: 80%;
+    text-align: center;
+}
+.err{
+    color: red;
 }

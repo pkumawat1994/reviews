@@ -1,8 +1,8 @@
 import axios from "axios";
-export const API_ENDPOINT = "https://e-shop-com.onrender.com/reviews";
+export const API_ENDPOINT = "https://e-shop-com.onrender.com";
 
-const dataService = axios.create({
+const DataService = axios.create({
   baseURL: API_ENDPOINT,
  
 });
-export default dataService;
+export default DataService;
